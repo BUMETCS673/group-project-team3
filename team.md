@@ -13,3 +13,12 @@ I am looking forward to learning more from this course and from all of you,
 Sylvie
 
 
+Jing's self-introduction:
+
+Hi everyone, 
+
+My name is Jing Tian. I'm taking the computer science MS program and this course is my last course before graduation. I finished my undergraduate study with computer science major and economy minor. I also have some knowledge about data analysis and machine learning. 
+My favoriate code language are python, javascript, php and R.
+I have no working background so I'm looking foward to learn from all classmates :)
+
+Jing
