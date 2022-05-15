@@ -1,7 +1,8 @@
 /*!
  * This module contains Card class
- * By Serguei Chervachidze
- * July 2021
+ * By Group 3
+ * Initial code by Serguei Chervachidze
+ * May 2022  
  */
 
 class Card {

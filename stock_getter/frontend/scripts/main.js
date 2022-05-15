@@ -1,7 +1,8 @@
 /*!
  * Script file for the site                       
- * Serguei Chervachidze
- * July 2021                                     
+ * By Group 3
+ * Initial code by Serguei Chervachidze
+ * May 2022                                   
 */
 
 /**
