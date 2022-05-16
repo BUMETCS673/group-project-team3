@@ -34,5 +34,21 @@ Looking forward to meeting, working and learning a lot from everyone.
 
 Duy Nguyen
 
+_______________________________________________________________
+
+Serguei's self-introduction:
+
+Hi:
+
+I am Serguei Chervachidze, based in the Boston area. 
+
+I have a background in statistics and economics and work as a data scientist in the financial industry. I am in the MS in computer science program.
+
+My tech stack inlcudes Python, Django, JS, Boostrap, Angular (some), SQL, R. I do most of my work in Python with data science/ML libs and frameworks.
+
+Look foward to meeting everyone in this class.
+
+Serguei Chervachidze.
+
 
 
