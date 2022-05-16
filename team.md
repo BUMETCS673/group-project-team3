@@ -22,3 +22,17 @@ My favoriate code language are python, javascript, php and R.
 I have no working background so I'm looking foward to learn from all classmates :)
 
 Jing
+
+_______________________________________________________________
+
+Duy's self-introduction:
+
+Hello everyone,
+
+My name is Duy Nguyen, working as a Quality Manager (manufacturing not software) at Carrier. I have a bachelor's in Mechanical Engineering but while working as a Quality Manager, I noticed the importance of software, automation and data analysis. I decided to get a master in Compsci (no concentration) in order to further automate and improve my current job or perhaps get into the data science field. 
+Looking forward to meeting, working and learning a lot from everyone. 
+
+Duy Nguyen
+
+
+
