@@ -5,5 +5,5 @@ The team includes the following memebres:
 * Jing Tian
 * Serguei Chervachidze
 * Sylvie Xiang
-* Igor Kheyfets
+
 
