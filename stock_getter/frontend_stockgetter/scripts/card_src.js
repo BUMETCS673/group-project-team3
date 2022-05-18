@@ -22,8 +22,18 @@ class Card {
         this.exportPlotBtn = document.querySelector(
             `#export_plot${this.cardNum}`)
 
-        // Set up backend URL
-        this.StkDataUrl = 'http://127.0.0.1:8000/stock_data/';
+        // Daily time series API
+        this.dailyStkUrl = 'https://www.alphavantage.co/query?function='
+        this.dailyStkUrl += 'TIME_SERIES_DAILY';
+        this.dailyStkUrl += '&outputsize=full&apikey=Q5SUUT82ASKLSWB1';
+
+        // Weekly time series API
+        this.weeklyStkUrl = 'https://www.alphavantage.co/query?function=';
+        this.weeklyStkUrl += 'TIME_SERIES_WEEKLY&apikey=Q5SUUT82ASKLSWB1';
+
+        // Monthly time series API
+        this.monthlyStkUrl = 'https://www.alphavantage.co/query?function=';
+        this.monthlyStkUrl += 'TIME_SERIES_MONTHLY&apikey=Q5SUUT82ASKLSWB1';
 
         // specify the columns
         this.columnDefsStk = [
@@ -58,40 +68,26 @@ class Card {
             at ${this.grain} grain`)
     
         // Construct url for API and key for parsing JSON
+        let url = '';
         let parseKey = '';
     
         if (this.grain == 'daily') {
+            url = this.dailyStkUrl;
             parseKey = 'Time Series (Daily)'
         } else if (this.grain == 'weekly') {
+            url = this.weeklyStkUrl;
             parseKey = 'Weekly Time Series';
         } else {
+            url = this.monthlyStkUrl;
             parseKey = 'Monthly Time Series';
-        }
-
-        // Now construct the JSON with request data
-        const requestJSON = {
-            'Symbol': this.stockSymbol,
-            'Grain': this.grain
-        }
-
-        // Construct the request options (make sure it's JSON)
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify(requestJSON),
-            headers: {
-                'Content-Type': 'application/json'
-            }
         }
     
         // Add in stock symbol
-        // url += `&symbol=${this.stockSymbol}`;
+        url += `&symbol=${this.stockSymbol}`;
     
         // Fetch the data 
-        let fetchMsg = `Getting data for stock ${this.stockSymbol} `;
-        fetchMsg += `at grain ${this.grain}`
-        console.log(fetchMsg);
-        
-        fetch(this.StkDataUrl, requestOptions)
+        console.log(url);
+        fetch(url, {})
             .then(response => {
                 console.log("Response: " + response);
                 return response.json();

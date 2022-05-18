@@ -17,10 +17,6 @@ import {Card} from './card.js';
 let cardArray = [];
 
 // Set up some URL's to access the API's
-// URL for FCSAPI.com stock list API
-// let stkLstUrl = 'https://fcsapi.com/api-v3/stock/list?country=';
-// stkLstUrl += 'United-states&access_key=4wcNF3TiJ7XVx6p8zDt21';
-
 let stkLstUrl = 'http://127.0.0.1:8000/stock_list/';
 
 // Specify the columns
