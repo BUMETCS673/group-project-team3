@@ -36,8 +36,6 @@ class StockListServiceAPIView(generics.ListCreateAPIView):
         try:
             # We just need to get the request and pass on to public API
             response = requests.get(self.stock_list_url)
-            # response = requests.get(self.stock_list_url, json={'key:'value})
-            data = response.json()
             
             # Handle errors
             if response is None:
