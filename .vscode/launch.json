@@ -11,6 +11,7 @@
             "program": "${workspaceFolder}/stock_getter/backend_stockgetter/manage.py",
             "args": [
                 "runserver",
+                "--noreload",
                 "8000"
             ],
             "django": true,

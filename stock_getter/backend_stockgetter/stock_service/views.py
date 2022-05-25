@@ -11,6 +11,7 @@ import pandas as pd
 import configparser
 import requests
 from typing import Any, Dict, List, Optional, Union, Tuple
+from .forecast_tools import Forecaster
 
 
 ###################################################################
@@ -114,7 +115,14 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
 
             # Pass request along
             data = response.json()
-            return JsonResponse(data=data, status=status.HTTP_200_OK)
+
+            # Test forecasting here
+            forecaster = Forecaster()
+            fcast_json = forecaster.forecast(data, grain, 10)
+
+            # Return response
+            # return JsonResponse(data=data, status=status.HTTP_200_OK)
+            return JsonResponse(data=fcast_json, status=status.HTTP_200_OK)
 
         except Exception as err:
             payload = {'Success': 0, 'ErrorMsg': str(err)}
