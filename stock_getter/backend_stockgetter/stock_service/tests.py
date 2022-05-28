@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 from django.test import Client
-from .views import *
+from .views import StockListServiceAPIView, StockDataServiceAPIView
+import requests
 
 
 class TestUrls(TestCase):
