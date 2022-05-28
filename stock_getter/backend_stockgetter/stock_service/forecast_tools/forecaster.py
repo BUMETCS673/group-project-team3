@@ -21,7 +21,7 @@ class Forecaster():
         """For now do nothing in constructor"""
         pass
 
-    def forecast(self, stock_data: dict, grain: str, horizon: str) -> dict:
+    def forecast(self, stock_data: dict, grain: str, horizon: str) -> str:
         """_summary_
 
         Args:
@@ -29,14 +29,23 @@ class Forecaster():
             horizon (str): _description_
 
         Returns:
-            dict: _description_
+            dict: dict with the data
         """
         data_df = self.parse_stock_data(stock_data, grain)
         
         # Instantiate model
         # forecast
         # return
-        return data_df.to_json()
+
+        # Cast date column back to string
+        data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
+
+        # Create return dict
+        ret_dict = {}
+        ret_dict['data'] = data_df.to_dict(orient="records")
+
+        return ret_dict
+
         
         # return {}
 
@@ -79,7 +88,7 @@ class Forecaster():
             volume.append(data_dict[key]['5. volume'])
 
         # Put into dict
-        out_dict= {'date': date, 'open': open, 'hi': hi, 'low': low,
+        out_dict= {'date': date, 'open': open, 'high': hi, 'low': low,
                     'close': close, 'volume': volume}
 
         # Now put into data frame and return

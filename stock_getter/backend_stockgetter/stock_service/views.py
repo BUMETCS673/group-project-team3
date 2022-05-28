@@ -118,11 +118,11 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
 
             # Test forecasting here
             forecaster = Forecaster()
-            fcast_json = forecaster.forecast(data, grain, 10)
+            fcast_dict = forecaster.forecast(data, grain, 10)
 
             # Return response
             # return JsonResponse(data=data, status=status.HTTP_200_OK)
-            return JsonResponse(data=fcast_json, status=status.HTTP_200_OK)
+            return JsonResponse(data=fcast_dict, status=status.HTTP_200_OK)
 
         except Exception as err:
             payload = {'Success': 0, 'ErrorMsg': str(err)}

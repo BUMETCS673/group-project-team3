@@ -57,17 +57,6 @@ class Card {
         console.log(`Getting data for stock symbol ${this.stockSymbol} 
             at ${this.grain} grain`)
     
-        // Construct url for API and key for parsing JSON
-        let parseKey = '';
-    
-        if (this.grain == 'daily') {
-            parseKey = 'Time Series (Daily)'
-        } else if (this.grain == 'weekly') {
-            parseKey = 'Weekly Time Series';
-        } else {
-            parseKey = 'Monthly Time Series';
-        }
-
         // Now construct the JSON with request data
         const requestJSON = {
             'Symbol': this.stockSymbol,
@@ -83,9 +72,6 @@ class Card {
             }
         }
     
-        // Add in stock symbol
-        // url += `&symbol=${this.stockSymbol}`;
-    
         // Fetch the data 
         let fetchMsg = `Getting data for stock ${this.stockSymbol} `;
         fetchMsg += `at grain ${this.grain}`
@@ -97,8 +83,8 @@ class Card {
                 return response.json();
                 })
             .then(data => {
-                let gridData = this.extractGridData(data[parseKey]);
-                let plotData = this.extractPlotData(data[parseKey])
+                let gridData = this.extractGridData(data['data']);
+                let plotData = this.extractPlotData(data['data'])
                 this.setStockGrid(gridData);
                 this.setStockPlot(plotData);
                 this.setCardTitles(this.stockName);
@@ -115,13 +101,13 @@ class Card {
         let outArray = [];
     
         // Now populate
-        for (let key in json) {
-            let row = {'date': key};
-            row['open'] =   json[key]['1. open'];
-            row['high'] =   json[key]['2. high'];
-            row['low'] =    json[key]['3. low'];
-            row['close'] =  json[key]['4. close'];
-            row['volume'] = json[key]['5. volume'];        
+        for (let item of json) {
+            let row = {'date': item['date']};
+            row['open'] =   item['open'];
+            row['high'] =   item['high'];
+            row['low'] =    item['low'];
+            row['close'] =  item['close'];
+            row['volume'] = item['volume'];        
             outArray.push(row);
         }
         return outArray;
@@ -137,16 +123,18 @@ class Card {
         let volume = [];
     
         // Now populate
-        for (let key in json) {
-            date.push(key);
-            open.push(json[key]['1. open']);
-            hi.push(json[key]['2. high']);
-            low.push(json[key]['3. low']);
-            close.push(json[key]['4. close']);
-            volume.push(json[key]['5. volume']);
+        for (let item of json) {
+            date.push(item['date']);
+            open.push(item['open']);
+            hi.push(item['high']);
+            low.push(item['low']);
+            close.push(item['close']);
+            volume.push(item['volume']);
     
             outArray = [date, open, hi, low, close, volume];
         }
+
+        
         return outArray;
     }
 
