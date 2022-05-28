@@ -5,17 +5,12 @@ from .views import *
 
 
 class TestUrls(TestCase):
-    """Class for url tests.
-    """
-    def test_stock_list_url_resolve(self):
-        """This method checks the url to see if they are valid.
-        """
+
+    def test_stock_list_url_is_valid(self):
         url = reverse('stock_service:stock_list')
         self.assertEqual(resolve(url).func.view_class, StockListServiceAPIView)
 
-    def test_stock_data_url_resolve(self):
-        """This method checks the url to see if they are valid.
-        """
+    def test_stock_data_url_is_valid(self):
         url = reverse('stock_service:stock_data')
         self.assertEqual(resolve(url).func.view_class, StockDataServiceAPIView)
 
@@ -23,8 +18,6 @@ class TestUrls(TestCase):
 class TestStockListServiceAPIView(TestCase):
 
     def setUp(self):
-        """This is a set up method for the client
-        """
         self.client = Client()
         self.data_url = reverse('stock_service:stock_list')
 
@@ -40,8 +33,7 @@ class TestStockListServiceAPIView(TestCase):
 
 class TestStockDataServiceAPIView(TestCase):
     def setUp(self):
-        """This is a set up method class
-        """
+
         self.stock_data_daily_url = \
             'https://www.alphavantage.co/query?function=TIME_' \
             'SERIES_DAILY&outputsize=full&apikey=Q5SUUT82ASKLSWB1'
@@ -54,7 +46,7 @@ class TestStockDataServiceAPIView(TestCase):
 
     def test_post_request(self):
         """This is method checks the post method in the StockDataServiceAPIView
-        makign sure all the response are 200 (can be found) using fsr stock
+        making sure all the response are 200 (can be found) using fsr stock
         as the manual check
         """
         symbol = "fsr"
