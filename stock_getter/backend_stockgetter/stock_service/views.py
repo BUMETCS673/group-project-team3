@@ -101,6 +101,8 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         try:
             symbol = request.data.get("Symbol", None)
             grain = request.data.get("Grain", None)
+            forecast = request.data.get("Forecast", False)
+            horizon = request.data.get("Horizon", 10)
             if symbol is None or grain is None:
                 raise Exception("***Error: Name and grain are required fields")
 
@@ -113,16 +115,22 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
                 msg += "from stock data API"
                 raise Exception(msg)
 
-            # Pass request along
-            data = response.json()
+            # Extrac response as JSON
+            stock_data_json = response.json()
 
-            # Test forecasting here
+            # Instantiate forecaster and
+            #   forecast, if required. Otherwise process into 'recrods'
+            #   orientation of the JSON
             forecaster = Forecaster()
-            fcast_dict = forecaster.forecast(data, grain, 10)
+            if forecast:
+                stock_data_json = forecaster.forecast(
+                    stock_data_json, grain, horizon)
+            else:
+                stock_data_json = forecaster.process_stock_data(
+                    stock_data_json, grain)
 
             # Return response
-            # return JsonResponse(data=data, status=status.HTTP_200_OK)
-            return JsonResponse(data=fcast_dict, status=status.HTTP_200_OK)
+            return JsonResponse(data=stock_data_json, status=status.HTTP_200_OK)
 
         except Exception as err:
             payload = {'Success': 0, 'ErrorMsg': str(err)}
@@ -150,6 +158,7 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         # Now do a GET request to the public API
         return requests.get(url)
 
+    
 
 
 

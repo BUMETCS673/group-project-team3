@@ -21,15 +21,39 @@ class Forecaster():
         """For now do nothing in constructor"""
         pass
 
-    def forecast(self, stock_data: dict, grain: str, horizon: str) -> str:
-        """_summary_
+    def process_stock_data(self, stock_data: dict, grain:str) -> dict:
+        """Method to pre-process data into Records orientation needed
+        for the front end
 
         Args:
-            stock_data (dict): _description_
-            horizon (str): _description_
+            stock_data (dict): stock data in dict format
+            grain (str): data grain ('weekly', 'daily', 'monthly')
 
         Returns:
-            dict: dict with the data
+            dict: dict with stock data in records orientation
+        """
+        data_df = self.parse_stock_data(stock_data, grain)
+        
+        # Cast date column back to string TODO: refactor into sep fn
+        data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
+
+        # Create return dict
+        ret_dict = {}
+        ret_dict['data'] = data_df.to_dict(orient="records")
+
+        return ret_dict
+
+
+    def forecast(self, stock_data: dict, grain: str, horizon: str) -> dict:
+        """Method to generate forecast
+
+        Args:
+            stock_data (dict): stock data in dict format
+            grain (str): data grain ('weekly', 'daily', 'monthly')
+            horizon (str): forecast horizon
+
+        Returns:
+            dict: dict with the data (in records orientation)
         """
         data_df = self.parse_stock_data(stock_data, grain)
         
@@ -54,7 +78,7 @@ class Forecaster():
 
         Args:
             stock_data (dict): scotk cata
-            grain (str): data grain
+            grain (str): data grain ('weekly', 'daily', 'monthly')
 
         Returns:
             pd.DataFrame: resulting data frame
