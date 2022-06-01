@@ -1,16 +1,18 @@
 ###################################################################
 # This file contains views for the API service
 ###################################################################
-from django.shortcuts import render
+import configparser
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import pandas as pd
+import requests
 from django.http import JsonResponse
 from django.http.request import HttpRequest
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import status
-import pandas as pd
-import configparser
-import requests
-from typing import Any, Dict, List, Optional, Union, Tuple
+
 from .forecast_tools import Forecaster
 
 
@@ -101,8 +103,9 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         try:
             symbol = request.data.get("Symbol", None)
             grain = request.data.get("Grain", None)
-            forecast = request.data.get("Forecast", False)
+            forecast = request.data.get("Forecast", True) # here
             horizon = request.data.get("Horizon", 10)
+            model_type = request.data.get("ModelType", "Prophet")
             if symbol is None or grain is None:
                 raise Exception("***Error: Name and grain are required fields")
 
@@ -124,7 +127,7 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
             forecaster = Forecaster()
             if forecast:
                 stock_data_json = forecaster.forecast(
-                    stock_data_json, grain, horizon)
+                    stock_data_json, grain, horizon, model_type)
             else:
                 stock_data_json = forecaster.process_stock_data(
                     stock_data_json, grain)

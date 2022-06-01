@@ -2,11 +2,9 @@
 # This file defines the Forecaster object, used to wrap forecasting
 # models
 ###################################################################
-from datetime import date, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Union
-
-import numpy as np
 import pandas as pd
+from .forecast_models import ProphetModel
 
 
 ###################################################################
@@ -19,7 +17,6 @@ class Forecaster():
     """
     def __init__(self) -> None:
         """For now do nothing in constructor"""
-        pass
 
     def process_stock_data(self, stock_data: dict, grain:str) -> dict:
         """Method to pre-process data into Records orientation needed
@@ -33,45 +30,42 @@ class Forecaster():
             dict: dict with stock data in records orientation
         """
         data_df = self.parse_stock_data(stock_data, grain)
-        
-        # Cast date column back to string TODO: refactor into sep fn
-        data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
-
-        # Create return dict
-        ret_dict = {}
-        ret_dict['data'] = data_df.to_dict(orient="records")
-
+        ret_dict = self.convert_data_to_records_orientation(data_df)
         return ret_dict
 
-
-    def forecast(self, stock_data: dict, grain: str, horizon: str) -> dict:
+    def forecast(self, stock_data: dict, grain: str, horizon: str,
+                 model_type: str="Prophet") -> dict:
         """Method to generate forecast
 
         Args:
             stock_data (dict): stock data in dict format
             grain (str): data grain ('weekly', 'daily', 'monthly')
             horizon (str): forecast horizon
+            model_type(str): forecasting model type. For now just 
+                supports Facebook prophet algorithm:
+                https://facebook.github.io/prophet/
 
         Returns:
             dict: dict with the data (in records orientation)
         """
         data_df = self.parse_stock_data(stock_data, grain)
         
-        # Instantiate model
-        # forecast
-        # return
+        # Instantiate appropriate model (for now just prophet)
+        if model_type == "Prophet":
+            forecast_model = ProphetModel(data_df, grain)
+        else:
+            msg = "***ERROR: incorrect model type specified"
+            msg += "returning just history with no forecast"
+            raise Exception(msg)
 
-        # Cast date column back to string
-        data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
+        # Forecast
+        fcast_df = forecast_model.run_forecast(horizon)
+        fcast_df = fcast_df.fillna('')
 
-        # Create return dict
-        ret_dict = {}
-        ret_dict['data'] = data_df.to_dict(orient="records")
 
+        # Put into proper orientation in the dict and return
+        ret_dict = self.convert_data_to_records_orientation(fcast_df)
         return ret_dict
-
-        
-        # return {}
 
     def parse_stock_data(self, stock_data: dict, grain:str) -> pd.DataFrame:
         """Helper method to parse out data
@@ -119,5 +113,31 @@ class Forecaster():
         out_df = pd.DataFrame.from_dict(out_dict)
         out_df['date'] = pd.to_datetime(out_df['date'], format='%Y-%m-%d')
         return out_df
+
+    def convert_data_to_records_orientation(
+        self, data_df: pd.DataFrame) -> dict:
+        """Helper method to convert data from data frame into a dict with 
+        records orientation and stringify dates column to make in serialize
+        in JSON properly.
+
+        Args:
+            data_df (pd.DataFrame): data frame with data
+
+        Returns:
+            dict: dict with data
+        """
+        try:
+            # Cast date column back to string
+            data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
+
+            # Create return dict
+            ret_dict = {}
+            ret_dict['data'] = data_df.to_dict(orient="records")
+            
+            return ret_dict
+
+        except Exception as err:
+            print(err)
+
 
 

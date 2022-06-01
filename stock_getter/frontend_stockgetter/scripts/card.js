@@ -6,12 +6,13 @@
  */
 
 class Card {
-    constructor(stockSelection, grain, cardNum) {
+    constructor(stockSelection, grain, cardNum, forecast=true) {
         // Set the needed fields
         this.stockSymbol = stockSelection[0]["short_name"];
         this.stockName = stockSelection[0]["name"];
         this.cardNum = cardNum;
         this.grain = grain;
+        this.forecast = forecast
 
         // Set up elements and ids
         this.gridDivElement = document
@@ -26,15 +27,30 @@ class Card {
         this.StkDataUrl = 'http://127.0.0.1:8000/stock_data/';
 
         // specify the columns
-        this.columnDefsStk = [
-            { headerName: 'Date', field: "date", sort: 'asc' },
-            { headerName: 'Open Price', field: "open" },
-            { headerName: 'High Price', field: "high" },
-            { headerName: 'Low Price', field: "low" },
-            { headerName: 'Close Price', field: "close" },
-            { headerName: 'Volume', field: "volume" }
-        ];
-
+        if (this.forecast) {
+            this.columnDefsStk = [
+                { headerName: 'Date', field: "date", sort: 'asc' },
+                { headerName: 'Open Price', field: "open" },
+                { headerName: 'High Price', field: "high" },
+                { headerName: 'Low Price', field: "low" },
+                { headerName: 'Close Price', field: "close" },
+                { headerName: 'Volume', field: "volume" },
+                { headerName: 'Open Price Forecast', field: "open_forecast" },
+                { headerName: 'High Price Forecast', field: "high_forecast" },
+                { headerName: 'Low Price Forecast', field: "low_forecast" },
+                { headerName: 'Close Price Forecast', field: "close_forecast" },
+                { headerName: 'Volume Forecast', field: "volume_forecast" }
+            ];
+        }  else {
+            this.columnDefsStk = [
+                { headerName: 'Date', field: "date", sort: 'asc' },
+                { headerName: 'Open Price', field: "open" },
+                { headerName: 'High Price', field: "high" },
+                { headerName: 'Low Price', field: "low" },
+                { headerName: 'Close Price', field: "close" },
+                { headerName: 'Volume', field: "volume" }
+            ];
+        }          
         // let the grid know which columns and what data to use
         this.gridOptionsStk = {
             columnDefs: this.columnDefsStk,
@@ -107,7 +123,17 @@ class Card {
             row['high'] =   item['high'];
             row['low'] =    item['low'];
             row['close'] =  item['close'];
-            row['volume'] = item['volume'];        
+            row['volume'] = item['volume'];
+            
+            // Handle the forecast case
+            if (this.forecast) {
+                row['open_forecast'] =   item['open_forecast'];
+                row['high_forecast'] =   item['high_forecast'];
+                row['low_forecast'] =    item['low_forecast'];
+                row['close_forecast'] =  item['close_forecast'];
+                row['volume_forecast'] = item['volume_forecast'];
+            }
+
             outArray.push(row);
         }
         return outArray;
@@ -121,20 +147,47 @@ class Card {
         let open = [];
         let close = [];
         let volume = [];
-    
-        // Now populate
-        for (let item of json) {
-            date.push(item['date']);
-            open.push(item['open']);
-            hi.push(item['high']);
-            low.push(item['low']);
-            close.push(item['close']);
-            volume.push(item['volume']);
-    
-            outArray = [date, open, hi, low, close, volume];
-        }
 
+        let hi_forecast = [];
+        let low_forecast = [];
+        let open_forecast = [];
+        let close_forecast = [];
+        let volume_forecast = [];
+    
+        // Now populate, handling the forecast case
+        if (this.forecast) {
+            for (let item of json) {
+                date.push(item['date']);
+                open.push(item['open']);
+                hi.push(item['high']);
+                low.push(item['low']);
+                close.push(item['close']);
+                volume.push(item['volume']);
+                open_forecast.push(item['open_forecast']);
+                hi_forecast.push(item['high_forecast']);
+                low_forecast.push(item['low_forecast']);
+                close_forecast.push(item['close_forecast']);
+                volume_forecast.push(item['volume_forecast']);
         
+                outArray = [
+                    date, open, hi, low, close, volume,
+                    open_forecast, hi_forecast, low_forecast,
+                    close_forecast, volume_forecast
+                ];
+            }
+        
+        } else {
+            for (let item of json) {
+                date.push(item['date']);
+                open.push(item['open']);
+                hi.push(item['high']);
+                low.push(item['low']);
+                close.push(item['close']);
+                volume.push(item['volume']);
+        
+                outArray = [date, open, hi, low, close, volume];
+            }
+        }
         return outArray;
     }
 
@@ -174,8 +227,60 @@ class Card {
             y: data[4],
             line: {color: '#f0187d'}
           }
-    
-          let plotData = [trace1,trace2, trace3];
+
+          
+        // Handle forecast case
+          let plotData = []
+          if (this.forecast) {
+            let trace4 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'High forecast',
+                x: data[0],
+                y: data[7],
+                line: {
+                    color: '#17BECF',
+                    dash: 'dot',
+                    width: 4
+                }
+              }
+              
+              let trace5 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'Low forecast',
+                x: data[0],
+                y: data[8],
+                line: {
+                    color: '#7F7F7F',
+                    dash: 'dot',
+                    width: 4
+                }
+              }
+              
+              let trace6 = {
+                type: "scatter",
+                mode: "lines",
+                name: 'Close forecast',
+                x: data[0],
+                y: data[9],
+                line: {color: '#f0187d',
+                dash: 'dot',
+                width: 4                
+                }
+              }
+              plotData = [trace1,trace2, trace3, trace4, trace5, trace6];
+          
+            } else {
+              plotData = [trace1,trace2, trace3];
+          }
+
+          let legPositon;
+          if (this.forecast) {
+            legPositon = 0.05
+          } else {
+            legPositon = 0.35
+          }
     
           let layout = {
             title: 'Stock Price History',
@@ -202,7 +307,7 @@ class Card {
     
             legend: {
                 orientation: 'h',
-                x: 0.35,
+                x: legPositon,
             }
           };
           
