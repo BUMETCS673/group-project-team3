@@ -24,6 +24,7 @@ class Card {
             `#export_plot${this.cardNum}`);
 
         this.dataSpinner = document.querySelector('#get_data_spinner');
+        this.spinnerTextContainer = document.querySelector('#spinner_text_container');
         this.spinnerText = document.querySelector('#spinner_text');
 
         // Set up backend URL
@@ -68,15 +69,18 @@ class Card {
     }
 
     // Function to make spinner visible
-    makeSpinnerVisible() {
+    makeSpinnerVisible(name) {
         this.dataSpinner.style.display = "block";
-        this.spinnerText.style.display = "block";
+        this.spinnerText.innerHTML = "Loading stock data/generating forecasts";
+        this.spinnerText.innerHTML += ` for ${name}`;
+        this.spinnerTextContainer.style.display = "block";
     }
 
     // Function to make spinner invisible
     makeSpinnerInvisible() {
         this.dataSpinner.style.display = "none";
-        this.spinnerText.style.display = "none";
+        this.spinnerTextContainer.style.display = "none";
+        this.spinnerText = '';
     }
 
     unsetStockCard() {
@@ -89,7 +93,7 @@ class Card {
             at ${this.grain} grain`)
 
         // Make spinner visible
-        this.makeSpinnerVisible();
+        this.makeSpinnerVisible(this.stockName);
     
         // Now construct the JSON with request data
         const requestJSON = {
