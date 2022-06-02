@@ -60,8 +60,14 @@ class Forecaster():
 
         # Forecast
         fcast_df = forecast_model.run_forecast(horizon)
+
+        # Replace all NaN's as empty strings
         fcast_df = fcast_df.fillna('')
 
+        # Filter out negative values (replace with 0's)
+        filter_cols = [x for x in fcast_df.columns if x != 'date']
+        fcast_df[filter_cols] = fcast_df[filter_cols].applymap(
+            lambda x: 0 if type(x) is not str and x < 0 else x)
 
         # Put into proper orientation in the dict and return
         ret_dict = self.convert_data_to_records_orientation(fcast_df)
