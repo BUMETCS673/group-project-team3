@@ -42,6 +42,9 @@ const gridOptionsSym = {
       },
 };
 
+// Set the pointer to the forecast checkbox selector
+let hrznInput = document.querySelector('#forecast_horizon');
+
 // Define needed functions
 function setSymbolGrid(data) {
     // Clean data for missing vals
@@ -118,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('#clear_cards').disabled = false;
             document.querySelector('#get_zip').disabled = false;
         }
-        
+
         // Create card and set event listeners
         if (cardArray.length < 6) {
             // Get grain selection
@@ -127,7 +130,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create card
             let idNum = cardArray.length + 1;
             let card = new Card(selectedSeries, grainValue, idNum);
-            card.setStockCard();
+
+            // Set stock data, passing in forecast horizon if needed
+            if (!hrznInput.disabled) {
+                card.setStockCard(true, hrznInput.value);
+            } else {
+                card.setStockCard(false);
+            }
 
             // Event listeners
             card.exportDataBtn.onclick = function() {
@@ -189,4 +198,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         console.log(`Data download complete`);
     }
+
+    // Checkbox event listener
+    // Get the pointer to the element
+    let fcstCheckb = document.querySelector('#forecast_check');
+
+    // Add the listener to the checkbox
+    fcstCheckb.addEventListener("change", function() {
+        console.log("Updating status of forecast horizon input");
+        if (this.checked) {
+            hrznInput.disabled = false;
+        } else {
+            hrznInput.disabled = true;
+        }
+    });
+
 });

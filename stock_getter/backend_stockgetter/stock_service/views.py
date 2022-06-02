@@ -102,8 +102,8 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         try:
             symbol = request.data.get("Symbol", None)
             grain = request.data.get("Grain", None)
-            forecast = request.data.get("Forecast", True) # here
-            horizon = request.data.get("Horizon", 365)
+            forecast = request.data.get("Forecast", False)
+            horizon = request.data.get("Horizon", 10)
             model_type = request.data.get("ModelType", "Prophet")
             if symbol is None or grain is None:
                 raise Exception("***Error: Name and grain are required fields")

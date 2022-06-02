@@ -69,7 +69,7 @@ class Card {
         cardAreaDiv.style.display = "none";
     }
 
-    setStockCard() {
+    setStockCard(forecast=false, horizon=10) {
         console.log(`Getting data for stock symbol ${this.stockSymbol} 
             at ${this.grain} grain`)
     
@@ -77,6 +77,12 @@ class Card {
         const requestJSON = {
             'Symbol': this.stockSymbol,
             'Grain': this.grain
+        }
+
+        // Add additional fields if requesting a forecast
+        if (forecast) {
+            requestJSON.Forecast = true;
+            requestJSON.horizon = horizon;
         }
 
         // Construct the request options (make sure it's JSON)
@@ -87,6 +93,7 @@ class Card {
                 'Content-Type': 'application/json'
             }
         }
+
     
         // Fetch the data 
         let fetchMsg = `Getting data for stock ${this.stockSymbol} `;
