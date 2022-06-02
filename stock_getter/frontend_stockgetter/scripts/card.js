@@ -19,9 +19,12 @@ class Card {
             .querySelector(`#stock_data_grid${this.cardNum}`);
         this.plotDivId = `stk_plot${this.cardNum}`;
         this.exportDataBtn = document.querySelector(
-            `#export_data${this.cardNum}`)
+            `#export_data${this.cardNum}`);
         this.exportPlotBtn = document.querySelector(
-            `#export_plot${this.cardNum}`)
+            `#export_plot${this.cardNum}`);
+
+        this.dataSpinner = document.querySelector('#get_data_spinner');
+        this.spinnerText = document.querySelector('#spinner_text');
 
         // Set up backend URL
         this.StkDataUrl = 'http://127.0.0.1:8000/stock_data/';
@@ -64,6 +67,18 @@ class Card {
         };
     }
 
+    // Function to make spinner visible
+    makeSpinnerVisible() {
+        this.dataSpinner.style.display = "block";
+        this.spinnerText.style.display = "block";
+    }
+
+    // Function to make spinner invisible
+    makeSpinnerInvisible() {
+        this.dataSpinner.style.display = "none";
+        this.spinnerText.style.display = "none";
+    }
+
     unsetStockCard() {
         let cardAreaDiv = document.querySelector(`#card_area${this.cardNum}`);
         cardAreaDiv.style.display = "none";
@@ -72,6 +87,9 @@ class Card {
     setStockCard(forecast=false, horizon=10) {
         console.log(`Getting data for stock symbol ${this.stockSymbol} 
             at ${this.grain} grain`)
+
+        // Make spinner visible
+        this.makeSpinnerVisible();
     
         // Now construct the JSON with request data
         const requestJSON = {
@@ -93,7 +111,6 @@ class Card {
                 'Content-Type': 'application/json'
             }
         }
-
     
         // Fetch the data 
         let fetchMsg = `Getting data for stock ${this.stockSymbol} `;
@@ -111,6 +128,7 @@ class Card {
                 this.setStockGrid(gridData);
                 this.setStockPlot(plotData);
                 this.setCardTitles(this.stockName);
+                this.makeSpinnerInvisible();
                 this.makeCardVisible();
                 console.log('Success setting stock grid and plot');
             })

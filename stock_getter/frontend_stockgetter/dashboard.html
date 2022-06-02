@@ -91,12 +91,14 @@
               <h3 class="card-title">Available US Stocks:</h3>
               <p class="card-text">Choose the stock for which you would like 
                   to fetch data</p>
+
               <div id="sym_lst_grid"  class="ag-theme-alpine" 
                 style="height: 600px;">
               </div>
               
               <br>
               <div class="form-group">
+
                 <form>
                   <label for="data_grain">Select data grain</label>
                   <select id="data_grain" class="form-control" 
@@ -163,7 +165,25 @@
                  downloads stock data for all cards in on zip file.
                 </small>
 
-            </div>
+                <br>
+                <br>
+                <br>
+
+                <!-- Loading data forecast spinner div here -->
+                <div class="row d-flex justify-content-center">
+                  <div id="get_data_spinner"
+                    class="spinner-border" role="status" style="display: none;">
+                    <span class="sr-only"></span>
+                  </div>
+                  <br>
+                  <br>
+                  <div id="spinner_text" style="display: none;">
+                    <h5 class="d-flex justify-content-center">
+                        Loading stock data/generating forecasts</h5>
+                  </div>
+                </div>
+            
+              </div>
         </div>
       </div>
 
