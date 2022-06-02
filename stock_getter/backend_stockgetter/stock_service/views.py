@@ -85,7 +85,6 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         self.stock_data_daily_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&apikey=Q5SUUT82ASKLSWB1'
         self.stock_data_weekly_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&apikey=Q5SUUT82ASKLSWB1'
         self.stock_data_monthly_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&apikey=Q5SUUT82ASKLSWB1'
-       
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests. Not implemented for now.
@@ -104,7 +103,7 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
             symbol = request.data.get("Symbol", None)
             grain = request.data.get("Grain", None)
             forecast = request.data.get("Forecast", True) # here
-            horizon = request.data.get("Horizon", 10)
+            horizon = request.data.get("Horizon", 365)
             model_type = request.data.get("ModelType", "Prophet")
             if symbol is None or grain is None:
                 raise Exception("***Error: Name and grain are required fields")

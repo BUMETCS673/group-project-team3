@@ -207,7 +207,11 @@ class Card {
             name: 'High',
             x: data[0],
             y: data[2],
-            line: {color: '#17BECF'}
+            mode: 'markers',
+            marker: {
+                color: '#17BECF',
+                size: 2
+            }
           }
           
           let trace2 = {
@@ -216,7 +220,12 @@ class Card {
             name: 'Low',
             x: data[0],
             y: data[3],
-            line: {color: '#7F7F7F'}
+            mode: 'markers',
+            marker: {
+                color: '#7F7F7F',
+                size: 2
+        
+            }
           }
           
           let trace3 = {
@@ -225,9 +234,12 @@ class Card {
             name: 'Close',
             x: data[0],
             y: data[4],
-            line: {color: '#f0187d'}
+            mode: 'markers',
+            marker: {
+                color: '#f0187d',
+                size: 2
+            }
           }
-
           
         // Handle forecast case
           let plotData = []
@@ -235,38 +247,36 @@ class Card {
             let trace4 = {
                 type: "scatter",
                 mode: "lines",
-                name: 'High forecast',
+                name: 'High Forecast',
                 x: data[0],
                 y: data[7],
                 line: {
                     color: '#17BECF',
-                    dash: 'dot',
-                    width: 4
+                    width: 1
                 }
               }
               
               let trace5 = {
                 type: "scatter",
                 mode: "lines",
-                name: 'Low forecast',
+                name: 'Low Forecast',
                 x: data[0],
                 y: data[8],
                 line: {
                     color: '#7F7F7F',
-                    dash: 'dot',
-                    width: 4
+                    width: 1
                 }
               }
               
               let trace6 = {
                 type: "scatter",
                 mode: "lines",
-                name: 'Close forecast',
+                name: 'Close Forecast',
                 x: data[0],
                 y: data[9],
-                line: {color: '#f0187d',
-                dash: 'dot',
-                width: 4                
+                line: {
+                    color: '#f0187d',
+                    width: 1
                 }
               }
               plotData = [trace1,trace2, trace3, trace4, trace5, trace6];

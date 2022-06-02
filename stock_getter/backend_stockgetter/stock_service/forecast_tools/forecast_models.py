@@ -34,7 +34,6 @@ class ProphetModel():
         Returns:
             pd.DataFrame: forecast of individual series
         """
-        
         # Instantiate prophet and fit the model
         model = Prophet()
         # model = Prophet(growth='logistic')
@@ -43,7 +42,7 @@ class ProphetModel():
         
         # Make future dataframe and generate forecast
         future_df = model.make_future_dataframe(
-            periods=horizon, freq=self.grain, include_history=False)
+            periods=horizon, freq=self.grain, include_history=True)
         forecast_df = model.predict(future_df)
 
         # Wrangle into a nice df and return
