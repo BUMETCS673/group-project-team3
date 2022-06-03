@@ -29,8 +29,52 @@ class Forecaster():
         Returns:
             dict: dict with stock data in records orientation
         """
-        data_df = self.parse_stock_data(stock_data, grain)
-        ret_dict = self.convert_data_to_records_orientation(data_df)
+        # Parse stock data
+        # Create proper key string to parse out data
+        if grain == 'daily':
+            parse_key = 'Time Series (Daily)'
+        elif grain == 'weekly':
+            parse_key = 'Weekly Time Series'
+        else:
+            parse_key = 'Monthly Time Series'
+
+        # Now parse out the data and put into a dict
+        data_dict = stock_data[parse_key]
+        
+        # Create lists to hold stuff
+        date = []
+        hi = []
+        low = []
+        open = []
+        close = []
+        volume = []
+
+        # Populate these
+        for key in data_dict:
+            date.append(key)
+            open.append(data_dict[key]['1. open'])
+            hi.append(data_dict[key]['2. high'])
+            low.append(data_dict[key]['3. low'])
+            close.append(data_dict[key]['4. close'])
+            volume.append(data_dict[key]['5. volume'])
+
+        # Put into dict
+        out_dict= {'date': date, 'open': open, 'high': hi, 'low': low,
+                    'close': close, 'volume': volume}
+
+        # Now put into data frame and return
+        data_df = pd.DataFrame.from_dict(out_dict)
+        data_df['date'] = pd.to_datetime(data_df['date'], format='%Y-%m-%d')
+
+        # Put into proper orientation in the dict and return
+        # Cast date column back to string
+        data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
+
+        # Create return dict
+        ret_dict = {}
+        ret_dict['data'] = data_df.to_dict(orient="records")
+        
+        # Return
         return ret_dict
 
     def forecast(self, stock_data: dict, grain: str, horizon: str,
@@ -114,78 +158,6 @@ class Forecaster():
         
         # Return
         return ret_dict
-
-    def parse_stock_data(self, stock_data: dict, grain:str) -> pd.DataFrame:
-        """Helper method to parse out data
-
-        Args:
-            stock_data (dict): scotk cata
-            grain (str): data grain ('weekly', 'daily', 'monthly')
-
-        Returns:
-            pd.DataFrame: resulting data frame
-        """
-        # Create proper key string to parse out data
-        if grain == 'daily':
-            parse_key = 'Time Series (Daily)'
-        elif grain == 'weekly':
-            parse_key = 'Weekly Time Series'
-        else:
-            parse_key = 'Monthly Time Series'
-
-        # Now parse out the data and put into a dict
-        data_dict = stock_data[parse_key]
-        
-        # Create lists to hold stuff
-        date = []
-        hi = []
-        low = []
-        open = []
-        close = []
-        volume = []
-
-        # Populate these
-        for key in data_dict:
-            date.append(key)
-            open.append(data_dict[key]['1. open'])
-            hi.append(data_dict[key]['2. high'])
-            low.append(data_dict[key]['3. low'])
-            close.append(data_dict[key]['4. close'])
-            volume.append(data_dict[key]['5. volume'])
-
-        # Put into dict
-        out_dict= {'date': date, 'open': open, 'high': hi, 'low': low,
-                    'close': close, 'volume': volume}
-
-        # Now put into data frame and return
-        out_df = pd.DataFrame.from_dict(out_dict)
-        out_df['date'] = pd.to_datetime(out_df['date'], format='%Y-%m-%d')
-        return out_df
-
-    def convert_data_to_records_orientation(
-        self, data_df: pd.DataFrame) -> dict:
-        """Helper method to convert data from data frame into a dict with 
-        records orientation and stringify dates column to make in serialize
-        in JSON properly.
-
-        Args:
-            data_df (pd.DataFrame): data frame with data
-
-        Returns:
-            dict: dict with data
-        """
-        try:
-            # Cast date column back to string
-            data_df.date = data_df.date.dt.strftime('%Y-%m-%d')
-
-            # Create return dict
-            ret_dict = {}
-            ret_dict['data'] = data_df.to_dict(orient="records")
-            
-            return ret_dict
-
-        except Exception as err:
-            print(err)
 
 
 
