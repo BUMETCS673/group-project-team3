@@ -1,3 +1,8 @@
+import os
+from django import setup
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend_stockgetter.settings')
+setup()
+
 from django.test import TestCase
 from django.urls import reverse, resolve
 from django.test import Client
