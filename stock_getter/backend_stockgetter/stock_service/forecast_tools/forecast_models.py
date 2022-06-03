@@ -36,8 +36,6 @@ class ProphetModel():
         """
         # Instantiate prophet and fit the model
         model = Prophet()
-        # model = Prophet(growth='logistic')
-        # model.add_country_holidays(country_name='US')
         model.fit(df)
         
         # Make future dataframe and generate forecast
