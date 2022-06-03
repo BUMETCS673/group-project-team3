@@ -48,43 +48,8 @@ class Forecaster():
         Returns:
             dict: dict with the data (in records orientation)
         """
-        # Parse stock data
-        # Create proper key string to parse out data
-        if grain == 'daily':
-            parse_key = 'Time Series (Daily)'
-        elif grain == 'weekly':
-            parse_key = 'Weekly Time Series'
-        else:
-            parse_key = 'Monthly Time Series'
-
-        # Now parse out the data and put into a dict
-        data_dict = stock_data[parse_key]
+        data_df = self.parse_stock_data(stock_data, grain)
         
-        # Create lists to hold stuff
-        date = []
-        hi = []
-        low = []
-        open = []
-        close = []
-        volume = []
-
-        # Populate these
-        for key in data_dict:
-            date.append(key)
-            open.append(data_dict[key]['1. open'])
-            hi.append(data_dict[key]['2. high'])
-            low.append(data_dict[key]['3. low'])
-            close.append(data_dict[key]['4. close'])
-            volume.append(data_dict[key]['5. volume'])
-
-        # Put into dict
-        out_dict= {'date': date, 'open': open, 'high': hi, 'low': low,
-                    'close': close, 'volume': volume}
-
-        # Now put into data frame and return
-        data_df = pd.DataFrame.from_dict(out_dict)
-        data_df['date'] = pd.to_datetime(data_df['date'], format='%Y-%m-%d')
-
         # Instantiate appropriate model (for now just prophet)
         if model_type == "Prophet":
             forecast_model = ProphetModel(data_df, grain)
@@ -105,14 +70,7 @@ class Forecaster():
             lambda x: 0 if type(x) is not str and x < 0 else x)
 
         # Put into proper orientation in the dict and return
-        # Cast date column back to string
-        fcast_df.date = fcast_df.date.dt.strftime('%Y-%m-%d')
-
-        # Create return dict
-        ret_dict = {}
-        ret_dict['data'] = fcast_df.to_dict(orient="records")
-        
-        # Return
+        ret_dict = self.convert_data_to_records_orientation(fcast_df)
         return ret_dict
 
     def parse_stock_data(self, stock_data: dict, grain:str) -> pd.DataFrame:
