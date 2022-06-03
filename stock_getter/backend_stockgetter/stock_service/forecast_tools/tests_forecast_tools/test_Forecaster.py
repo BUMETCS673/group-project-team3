@@ -51,57 +51,57 @@ class TestForecaster(unittest.TestCase):
 
         # Run checks here
         msg = "The return object should be a dict"
-        self.assertTrue(isinstance(stock_data_json, dict))
+        self.assertTrue(isinstance(stock_data_json, dict), msg)
         
         msg = "Number of elements in data list should be 5715"
-        self.assertEqual(len(stock_data_json['data']), 5715)
+        self.assertEqual(len(stock_data_json['data']), 5715, msg)
 
         msg = "'date' should be one of the returned fields"
-        self.assertTrue('date' in stock_data_json['data'][0])
+        self.assertTrue('date' in stock_data_json['data'][0], msg)
 
         msg = "'open' should be one of the returned fields"
-        self.assertTrue('open' in stock_data_json['data'][0])
+        self.assertTrue('open' in stock_data_json['data'][0], msg)
 
         msg = "'open_forecast' should be one of the returned fields"
-        self.assertTrue('open_forecast' in stock_data_json['data'][0])
+        self.assertTrue('open_forecast' in stock_data_json['data'][0], msg)
 
         msg = "'high' should be one of the returned fields"
-        self.assertTrue('high' in stock_data_json['data'][0])
+        self.assertTrue('high' in stock_data_json['data'][0], msg)
 
         msg = "'high_forecast' should be one of the returned fields"
-        self.assertTrue('high_forecast' in stock_data_json['data'][0])
+        self.assertTrue('high_forecast' in stock_data_json['data'][0], msg)
 
         msg = "'low' should be one of the returned fields"
-        self.assertTrue('low' in stock_data_json['data'][0])
+        self.assertTrue('low' in stock_data_json['data'][0], msg)
 
         msg = "'low_forecast' should be one of the returned fields"
-        self.assertTrue('low_forecast' in stock_data_json['data'][0])
+        self.assertTrue('low_forecast' in stock_data_json['data'][0], msg)
 
         msg = "'close' should be one of the returned fields"
-        self.assertTrue('close' in stock_data_json['data'][0])
+        self.assertTrue('close' in stock_data_json['data'][0], msg)
 
         msg = "'close_forecast' should be one of the returned fields"
-        self.assertTrue('close_forecast' in stock_data_json['data'][0])
+        self.assertTrue('close_forecast' in stock_data_json['data'][0], msg)
 
         msg = "'volume' should be one of the returned fields"
-        self.assertTrue('volume' in stock_data_json['data'][0])
+        self.assertTrue('volume' in stock_data_json['data'][0], msg)
 
         msg = "'volume_forecast' should be one of the returned fields"
-        self.assertTrue('volume_forecast' in stock_data_json['data'][0])
+        self.assertTrue('volume_forecast' in stock_data_json['data'][0], msg)
 
         msg = "The last date should be '2022-07-03'"
-        self.assertEqual(stock_data_json['data'][0]['date'], '2022-07-03')
+        self.assertEqual(stock_data_json['data'][0]['date'], '2022-07-03', msg)
 
         msg = "The last value for open_forecast should be 157.0"
         self.assertEqual(round(
-            stock_data_json['data'][0]['open_forecast'], 0), 157.0)
+            stock_data_json['data'][0]['open_forecast'], 0), 157.0, msg)
 
         msg = "The first date should be '2022-07-03'"
-        self.assertEqual(stock_data_json['data'][-1]['date'], '1999-11-01')
+        self.assertEqual(stock_data_json['data'][-1]['date'], '1999-11-01', msg)
 
         msg = "The first value for low_forecast should be 102"
         self.assertEqual(round(
-            stock_data_json['data'][-1]['low_forecast'], 0), 102)
+            stock_data_json['data'][-1]['low_forecast'], 0), 102, msg)
 
     def test_process_stock_data(self):
         """Test process_stock_data function
@@ -113,38 +113,38 @@ class TestForecaster(unittest.TestCase):
 
         # Run checks here
         msg = "The return object should be a dict"
-        self.assertTrue(isinstance(stock_data_json, dict))
+        self.assertTrue(isinstance(stock_data_json, dict), msg)
         
         msg = "Number of elements in data list should be 5685"
-        self.assertEqual(len(stock_data_json['data']), 5685)
+        self.assertEqual(len(stock_data_json['data']), 5685, msg)
 
         msg = "'date' should be one of the returned fields"
-        self.assertTrue('date' in stock_data_json['data'][0])
+        self.assertTrue('date' in stock_data_json['data'][0], msg)
 
         msg = "'open' should be one of the returned fields"
-        self.assertTrue('open' in stock_data_json['data'][0])
+        self.assertTrue('open' in stock_data_json['data'][0], msg)
 
         msg = "'high' should be one of the returned fields"
-        self.assertTrue('high' in stock_data_json['data'][0])
+        self.assertTrue('high' in stock_data_json['data'][0], msg)
 
         msg = "'low' should be one of the returned fields"
-        self.assertTrue('low' in stock_data_json['data'][0])
+        self.assertTrue('low' in stock_data_json['data'][0], msg)
 
         msg = "'close' should be one of the returned fields"
-        self.assertTrue('close' in stock_data_json['data'][0])
+        self.assertTrue('close' in stock_data_json['data'][0], msg)
 
         msg = "'volume' should be one of the returned fields"
-        self.assertTrue('volume' in stock_data_json['data'][0])
+        self.assertTrue('volume' in stock_data_json['data'][0], msg)
 
         msg = "The last date should be '2022-06-03'"
-        self.assertEqual(stock_data_json['data'][0]['date'], '2022-06-03')
+        self.assertEqual(stock_data_json['data'][0]['date'], '2022-06-03', msg)
 
         msg = "The last value for open_forecast should be 146.9000"
-        self.assertEqual(stock_data_json['data'][0]['open'], '146.9000')
+        self.assertEqual(stock_data_json['data'][0]['open'], '146.9000', msg)
 
         msg = "The first date should be '1999-11-01'"
-        self.assertEqual(stock_data_json['data'][-1]['date'], '1999-11-01')
+        self.assertEqual(stock_data_json['data'][-1]['date'], '1999-11-01', msg)
 
         msg = "The first value for low_forecast should be 77.3700'"
-        self.assertEqual(stock_data_json['data'][-1]['low'], '77.3700')
+        self.assertEqual(stock_data_json['data'][-1]['low'], '77.3700', msg)
 
