@@ -117,7 +117,7 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
                 msg += "from stock data API"
                 raise Exception(msg)
 
-            # Extrac response as JSON
+            # Extract response as JSON
             stock_data_json = response.json()
 
             # Instantiate forecaster and
