@@ -43,55 +43,55 @@ class TestProphetModel(unittest.TestCase):
 
         # Run checks here
         msg = "The return object should be a pandas data frame"
-        self.assertTrue(isinstance(fcast_df, pd.DataFrame))
+        self.assertTrue(isinstance(fcast_df, pd.DataFrame), msg)
         
         msg = "Number of elements in the data frame should be 5715"
-        self.assertEqual(len(fcast_df), 5715)
+        self.assertEqual(len(fcast_df), 5715, msg)
 
         msg = "'date' should be one of the data frame columns"
-        self.assertTrue('date' in fcast_df.columns)
+        self.assertTrue('date' in fcast_df.columns, msg)
 
         msg = "'open' should be one of the data frame columns"
-        self.assertTrue('open' in fcast_df.columns)
+        self.assertTrue('open' in fcast_df.columns, msg)
 
         msg = "'open_forecast' should be one of the data frame columns"
-        self.assertTrue('open_forecast' in fcast_df.columns)
+        self.assertTrue('open_forecast' in fcast_df.columns, msg)
 
         msg = "'high' should be one of the data frame columns"
-        self.assertTrue('high' in fcast_df.columns)
+        self.assertTrue('high' in fcast_df.columns, msg)
 
         msg = "'high_forecast' should be one of the data frame columns"
-        self.assertTrue('high_forecast' in fcast_df.columns)
+        self.assertTrue('high_forecast' in fcast_df.columns, msg)
 
         msg = "'low' should be one of the data frame columns"
-        self.assertTrue('low' in fcast_df.columns)
+        self.assertTrue('low' in fcast_df.columns, msg)
 
         msg = "'low_forecast' should be one of the data frame columns"
-        self.assertTrue('low_forecast' in fcast_df.columns)
+        self.assertTrue('low_forecast' in fcast_df.columns, msg)
 
         msg = "'close' should be one of the data frame columns"
-        self.assertTrue('close' in fcast_df.columns)
+        self.assertTrue('close' in fcast_df.columns, msg)
 
         msg = "'close_forecast' should be one of the data frame columns"
-        self.assertTrue('close_forecast' in fcast_df.columns)
+        self.assertTrue('close_forecast' in fcast_df.columns, msg)
 
         msg = "'volume' should be one of the data frame columns"
-        self.assertTrue('volume' in fcast_df.columns)
+        self.assertTrue('volume' in fcast_df.columns, msg)
 
         msg = "'volume_forecast' should be one of the data frame columns"
-        self.assertTrue('volume_forecast' in fcast_df.columns)
+        self.assertTrue('volume_forecast' in fcast_df.columns, msg)
 
         msg = "The last date should be ''2022-07-03 00:00:00''"
-        self.assertEqual(str(fcast_df['date'][0]), '2022-07-03 00:00:00')
+        self.assertEqual(str(fcast_df['date'][0]), '2022-07-03 00:00:00', msg)
 
         msg = "The last value for open_forecast should be 157.0"
         self.assertEqual(round(
-            fcast_df['open_forecast'][0], 0), 157.0)
+            fcast_df['open_forecast'][0], 0), 157.0, msg)
 
         msg = "The first date should be '1999-11-01 00:00:00'"
         self.assertEqual(str(
-            fcast_df['date'].iloc[len(fcast_df)-1]), '1999-11-01 00:00:00')
+            fcast_df['date'].iloc[len(fcast_df)-1]), '1999-11-01 00:00:00', msg)
 
         msg = "The first value for low_forecast should be 102"
         self.assertEqual(round(
-            fcast_df['low_forecast'].iloc[len(fcast_df)-1], 0), 102)
+            fcast_df['low_forecast'].iloc[len(fcast_df)-1], 0), 102, msg)
