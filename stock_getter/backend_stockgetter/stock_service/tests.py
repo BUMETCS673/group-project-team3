@@ -61,3 +61,4 @@ class TestStockDataServiceAPIView(TestCase):
         response = requests.get(url)
         self.assertEquals(response.status_code, 200)
 
+
