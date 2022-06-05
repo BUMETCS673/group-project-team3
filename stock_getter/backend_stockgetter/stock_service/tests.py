@@ -60,3 +60,4 @@ class TestStockDataServiceAPIView(TestCase):
         url = self.stock_data_monthly_url + f'&symbol={symbol}'
         response = requests.get(url)
         self.assertEquals(response.status_code, 200)
+
