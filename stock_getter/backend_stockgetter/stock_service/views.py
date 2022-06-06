@@ -1,16 +1,19 @@
 ###################################################################
 # This file contains views for the API service
 ###################################################################
-from django.shortcuts import render
+import configparser
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import pandas as pd
+import requests
 from django.http import JsonResponse
 from django.http.request import HttpRequest
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import status
-import pandas as pd
-import configparser
-import requests
-from typing import Any, Dict, List, Optional, Union, Tuple
+
+from .forecast_tools import Forecaster
 
 
 ###################################################################
@@ -82,7 +85,6 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         self.stock_data_daily_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&apikey=Q5SUUT82ASKLSWB1'
         self.stock_data_weekly_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&apikey=Q5SUUT82ASKLSWB1'
         self.stock_data_monthly_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&apikey=Q5SUUT82ASKLSWB1'
-       
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests. Not implemented for now.
@@ -100,6 +102,9 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         try:
             symbol = request.data.get("Symbol", None)
             grain = request.data.get("Grain", None)
+            forecast = request.data.get("Forecast", False)
+            horizon = request.data.get("Horizon", 10)
+            model_type = request.data.get("ModelType", "Prophet")
             if symbol is None or grain is None:
                 raise Exception("***Error: Name and grain are required fields")
 
@@ -112,9 +117,22 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
                 msg += "from stock data API"
                 raise Exception(msg)
 
-            # Pass request along
-            data = response.json()
-            return JsonResponse(data=data, status=status.HTTP_200_OK)
+            # Extract response as JSON
+            stock_data_json = response.json()
+
+            # Instantiate forecaster and
+            #   forecast, if required. Otherwise process into 'recrods'
+            #   orientation of the JSON
+            forecaster = Forecaster()
+            if forecast:
+                stock_data_json = forecaster.forecast(
+                    stock_data_json, grain, horizon, model_type)
+            else:
+                stock_data_json = forecaster.process_stock_data(
+                    stock_data_json, grain)
+
+            # Return response
+            return JsonResponse(data=stock_data_json, status=status.HTTP_200_OK)
 
         except Exception as err:
             payload = {'Success': 0, 'ErrorMsg': str(err)}
@@ -142,6 +160,7 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         # Now do a GET request to the public API
         return requests.get(url)
 
+    
 
 
 
