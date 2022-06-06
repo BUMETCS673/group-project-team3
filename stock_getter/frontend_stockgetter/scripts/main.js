@@ -12,6 +12,7 @@
  */
 // Import Card class
 import {Card} from './card.js';
+import {favoriteCellRenderer} from './favorites.js';
 
 // Set up the card counter array
 let cardArray = [];
@@ -21,8 +22,9 @@ let stkLstUrl = 'http://127.0.0.1:8000/stock_list/';
 
 // Specify the columns
 const columnDefs = [
-    { headerName: 'Stok Symbol', field: "short_name", checkboxSelection: true,
+    { headerName: 'Stock Symbol', field: "short_name", checkboxSelection: true,
         sortable: true, filter: true, sort: 'asc' },
+    { headerName: 'Favorite', cellRenderer: favoriteCellRenderer },
     { headerName: 'Name', field: "name", sortable: true, filter: true  },
     { headerName: 'Country', field: "country" },
     { headerName: 'Sector', field: "sector", sortable: true, filter: true },
