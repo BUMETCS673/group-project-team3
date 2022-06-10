@@ -5,6 +5,14 @@ from parameterized import parameterized
 
 from .views import StockDataServiceAPIView, StockListServiceAPIView
 
+'''
+Unit tests for stock list and stock data objects.
+
+Tests are using parametrized.expand function for removing unnecessary repetition
+for similar tests. It specifies a list of tuples that will be used in each of the
+tests and storing them in the test function parameter values
+'''
+
 
 class TestUrls(TestCase):
 

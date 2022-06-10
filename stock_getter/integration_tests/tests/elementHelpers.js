@@ -5,9 +5,16 @@ async function clickElement(driver, cssSelector) {
   await element.click();
 }
 
-async function clickElementWithEnter(driver, cssSelector) {
+// Function needed for some elements for which regular click produces
+// error that element is not clickable
+async function clickElementWithSpace(driver, cssSelector) {
   const element = await getElement(driver, cssSelector);
-  await element.sendKeys(Key.ENTER);
+  await element.sendKeys(Key.SPACE);
+}
+
+async function selectNextOption(driver, cssSelector) {
+  const element = await getElement(driver, cssSelector);
+  await element.sendKeys(Key.ARROW_DOWN);
 }
 
 async function getElement(driver, cssSelector) {
@@ -26,4 +33,4 @@ async function getElementsText(driver, cssSelector) {
   return textValues;
 }
 
-module.exports = { clickElement, clickElementWithEnter, getElement, getElementsText };
+module.exports = { clickElement, clickElementWithSpace, selectNextOption, getElement, getElementsText };
