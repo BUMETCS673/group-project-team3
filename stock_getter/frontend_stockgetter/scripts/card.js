@@ -274,7 +274,6 @@ class Card {
           
         // Handle forecast case
           let plotData = []
-          console.log("FFF this.forecast", this.forecast);
           if (this.forecast) {
             let trace4 = {
                 type: "scatter",
@@ -317,7 +316,6 @@ class Card {
               plotData = [trace1,trace2, trace3];
           }
 
-          console.log("FFF plotData", plotData);
           let legPositon;
           if (this.forecast) {
             legPositon = 0.05
