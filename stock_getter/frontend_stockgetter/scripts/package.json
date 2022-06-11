@@ -1,0 +1,17 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "vitest --run --environment happy-dom"
+  },
+  "author": "duy nguyen",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "happy-dom": "^5.2.0",
+    "path": "^0.12.7",
+    "vitest": "^0.14.2"
+  }
+}
