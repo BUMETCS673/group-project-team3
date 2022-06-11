@@ -13,7 +13,7 @@ forecasting stock prices, plotting multiple stocks in one graph, and downloading
 # Quick setup guide for StockGetter:
 - Create a virtual environment and install required modules. The list of required modules can be found at: [stock_getter/backend_stockgetter/requirements.txt](stock_getter/backend_stockgetter/requirements.txt)
 
-Note: If you're using windows system, Anaconda is recommanded to set up a virtual environment.
+  Note: If you're using windows system, Anaconda is recommanded to set up a virtual environment.
 
 - Once all requirements is installed, open a new terminal and navigate to the app directory, for example: 
 ```
