@@ -28,7 +28,7 @@ python manage.py migrate
 
 - After migration, you can start backend server by:
 ```
-python manage.py runserver 8080
+python manage.py runserver 8000
 ```
 
 - To start frontend, first open another terminal and nagviate to frontend folder, for example:
@@ -39,9 +39,9 @@ cd frontend_stockgetter
 
 - In frontend directory, you can start local frontend server by:
 ```
-python -m http.server 8000
+python -m http.server 8080
 ```
-- Once backend and frontend are correctly launched, you can view the app page on localhost by [http://localhost:8000/](http://localhost:8000/)
+- Once backend and frontend are correctly launched, you can view the app page on localhost by [http://localhost:8080/](http://localhost:8080/)
 
 
 
