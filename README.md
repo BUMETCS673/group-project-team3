@@ -11,38 +11,37 @@ forecasting stock prices, plotting multiple stocks in one graph, and downloading
 * Sylvie Xiang
 
 # Quick setup guide for StockGetter:
-1. Create a virtual environment and install required modules. The list of required modules can be found at: [stock_getter/backend_stockgetter/requirements.txt](stock_getter/backend_stockgetter/requirements.txt)
+-Create a virtual environment and install required modules. The list of required modules can be found at: [stock_getter/backend_stockgetter/requirements.txt](stock_getter/backend_stockgetter/requirements.txt)
 
 Note: If you're using windows system, Anaconda is recommanded to set up a virtual environment.
 
-2. Once all requirements is installed, open a new terminal and navigate to the app directory, for example: 
+-Once all requirements is installed, open a new terminal and navigate to the app directory, for example: 
 ```
 cd C:\...\stock_getter
 ```
 
-3. Before launching backend, navigate to the back end directory and apply migration first. You can do it by: 
+-Before launching backend, navigate to the back end directory and apply migration first. You can do it by: 
 ```
 cd backend_stockend
 python manage.py migrate
 ```
 
-4. After migration, you can start backend server by:
+-After migration, you can start backend server by:
 ```
 python manage.py runserver 8080
 ```
 
-5. To start frontend, first open another terminal and nagviate to frontend folder, for example:
+-To start frontend, first open another terminal and nagviate to frontend folder, for example:
 ```
 cd C:\...\stock_getter
 cd frontend_stockgetter
 ```
 
-6. In frontend directory, you can start local frontend server by:
+-In frontend directory, you can start local frontend server by:
 ```
 python -m http.server 8000
 ```
-
-7. Once backend and frontend are correctly launched, you can view the app page on localhost by [http://localhost:8000/](http://localhost:8000/)
+-Once backend and frontend are correctly launched, you can view the app page on localhost by [http://localhost:8000/](http://localhost:8000/)
 
 
 
