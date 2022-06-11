@@ -22,7 +22,7 @@ cd C:\...\stock_getter
 
 - Before launching backend, navigate to the back end directory and apply migration first. You can do it by: 
 ```
-cd backend_stockend
+cd backend_stockgetter
 python manage.py migrate
 ```
 
