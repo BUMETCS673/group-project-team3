@@ -15,6 +15,9 @@ from rest_framework.views import status
 
 from .forecast_tools import Forecaster
 
+config = configparser.ConfigParser()
+config.read('api_keys.ini')
+config_section_urls = 'API_URLS'
 
 ###################################################################
 # Stock List Service Class
@@ -25,13 +28,8 @@ class StockListServiceAPIView(generics.ListCreateAPIView):
     """
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        # Parse API URL and key and intitialize
-        # config = configparser.ConfigParser()
-        # config.read('api_keys.ini')
-        # self.stock_list_url = config['APIURLS']['stock_list']
-
-        #TODO: Fix this to read config files
-        self.stock_list_url = 'https://fcsapi.com/api-v3/stock/list?country=United-states&access_key=4wcNF3TiJ7XVx6p8zDt21' 
+        # Parse API URL and key from local configuration file
+        self.stock_list_url = config[config_section_urls]['stock_list']
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests
@@ -75,16 +73,11 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
     """
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        # config = configparser.ConfigParser()
-        # config.read('api_keys.ini')
-        # self.stock_data_daily_url = config['APIURLS']['stock_data_daily']
-        # self.stock_data_weekly_url = config['APIURLS']['stock_data_weekly']
-        # self.stock_data_monthly_url = config['APIURLS']['stock_data_monthly']
 
-        #TODO: Fix this to read config files
-        self.stock_data_daily_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&apikey=Q5SUUT82ASKLSWB1'
-        self.stock_data_weekly_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&apikey=Q5SUUT82ASKLSWB1'
-        self.stock_data_monthly_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&apikey=Q5SUUT82ASKLSWB1'
+        # Parse API URL and key from local configuration file
+        self.stock_data_daily_url = config[config_section_urls]['stock_data_daily']
+        self.stock_data_weekly_url = config[config_section_urls]['stock_data_weekly']
+        self.stock_data_monthly_url = config[config_section_urls]['stock_data_monthly']
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests. Not implemented for now.
