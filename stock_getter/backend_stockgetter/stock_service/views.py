@@ -15,6 +15,9 @@ from rest_framework.views import status
 
 from .forecast_tools import Forecaster
 
+config = configparser.ConfigParser()
+config.read('api_keys.ini')
+config_section_urls = 'API_URLS'
 
 ###################################################################
 # Stock List Service Class
@@ -25,11 +28,8 @@ class StockListServiceAPIView(generics.ListCreateAPIView):
     """
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        
         # Parse API URL and key from local configuration file
-        config = configparser.ConfigParser()
-        config.read('api_keys.ini')
-        self.stock_list_url = config['API_URLS']['stock_list']
+        self.stock_list_url = config[config_section_urls]['stock_list']
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests
@@ -75,11 +75,9 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         super().__init__(**kwargs)
 
         # Parse API URL and key from local configuration file
-        config = configparser.ConfigParser()
-        config.read('api_keys.ini')
-        self.stock_data_daily_url = config['API_URLS']['stock_data_daily']
-        self.stock_data_weekly_url = config['API_URLS']['stock_data_weekly']
-        self.stock_data_monthly_url = config['API_URLS']['stock_data_monthly']
+        self.stock_data_daily_url = config[config_section_urls]['stock_data_daily']
+        self.stock_data_weekly_url = config[config_section_urls]['stock_data_weekly']
+        self.stock_data_monthly_url = config[config_section_urls]['stock_data_monthly']
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests. Not implemented for now.
