@@ -42,6 +42,8 @@ cd frontend_stockgetter
 python -m http.server 8080
 ```
 - Once backend and frontend are correctly launched, you can view the app page on localhost by [http://localhost:8080/](http://localhost:8080/)
+  
+  Note: backend and frontend port are fixed, please make sure you are using 8080 for the frontend and 8000 for the backend, otherwise the app will not work properly
 
 
 
