@@ -6,8 +6,8 @@
  */
 
 // Set some constants
-const whiteStar = "\u2606";
-const blackStar = "\u2605";
+const whiteStarCharacter = "\u2606";
+const blackStarCharacter = "\u2605";
 const favoritesLocalStorageKey = "Favorites";
 
 
@@ -15,16 +15,16 @@ const favoritesLocalStorageKey = "Favorites";
 const favoriteCellRenderer = (params) => {
     let stockName = params.data.short_name;
     let favoriteIcon = document.createElement('span');
-    favoriteIcon.innerHTML = isStockInFavorites(stockName) ? blackStar : whiteStar;
+    favoriteIcon.innerHTML = isStockInFavorites(stockName) ? blackStarCharacter : whiteStarCharacter;
     favoriteIcon.className = "favorite";
     favoriteIcon.addEventListener('click', function() {
         if (isStockInFavorites(stockName)) {
             removeFromFavorites(stockName);
-            this.innerHTML = whiteStar;
+            this.innerHTML = whiteStarCharacter;
         }
         else {
             addToFavorites(stockName);
-            this.innerHTML = blackStar;
+            this.innerHTML = blackStarCharacter;
         }
     });
     return favoriteIcon;

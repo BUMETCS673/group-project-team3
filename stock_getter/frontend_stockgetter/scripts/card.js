@@ -92,6 +92,8 @@ class Card {
         console.log(`Getting data for stock symbol ${this.stockSymbol} 
             at ${this.grain} grain`)
 
+        this.forecast = forecast;
+        
         // Make spinner visible
         this.makeSpinnerVisible(this.stockName);
     
