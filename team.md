@@ -11,7 +11,7 @@ I am familiar with R, STATA, Python, Java, Weka, and JMP.
 I am looking forward to learning more from this course and from all of you,
 
 Sylvie
-
+_______________________________________________________________
 
 Jing's self-introduction:
 
