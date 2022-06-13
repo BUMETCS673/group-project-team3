@@ -75,9 +75,12 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
         super().__init__(**kwargs)
 
         # Parse API URL and key from local configuration file
-        self.stock_data_daily_url = config[config_section_urls]['stock_data_daily']
-        self.stock_data_weekly_url = config[config_section_urls]['stock_data_weekly']
-        self.stock_data_monthly_url = config[config_section_urls]['stock_data_monthly']
+        self.stock_data_daily_url = config[
+            config_section_urls]['stock_data_daily']
+        self.stock_data_weekly_url = config[
+            config_section_urls]['stock_data_weekly']
+        self.stock_data_monthly_url = config[
+            config_section_urls]['stock_data_monthly']
 
     def get(self, request, *args, **kwargs):
         """This function handles GET requests. Not implemented for now.
@@ -96,7 +99,7 @@ class StockDataServiceAPIView(generics.ListCreateAPIView):
             symbol = request.data.get("Symbol", None)
             grain = request.data.get("Grain", None)
             forecast = request.data.get("Forecast", False)
-            horizon = request.data.get("Horizon", 10)
+            horizon = int(request.data.get("Horizon", 10))
             model_type = request.data.get("ModelType", "Prophet")
             if symbol is None or grain is None:
                 raise Exception("***Error: Name and grain are required fields")
