@@ -106,7 +106,7 @@ class Card {
         // Add additional fields if requesting a forecast
         if (forecast) {
             requestJSON.Forecast = true;
-            requestJSON.horizon = horizon;
+            requestJSON.Horizon = horizon;
         }
 
         // Construct the request options (make sure it's JSON)
