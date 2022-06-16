@@ -1,7 +1,7 @@
 import unittest
 import configparser
 
-# Test if local configuration file meet the requirementsa and ready to use in app 
+# Test if local configuration file meets the requirements and ready to use in app 
 config = configparser.ConfigParser()
 config.read('api_keys.ini')
 
