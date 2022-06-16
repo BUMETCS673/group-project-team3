@@ -12,7 +12,7 @@ class TestConfigurationFile(unittest.TestCase):
         self.assertTrue(config)
 
     def test_section_name(self):
-        # test if configuration file contians correct section
+        # test if configuration file contains correct section
         section_name = 'API_URLS'
         assert section_name in config
     
