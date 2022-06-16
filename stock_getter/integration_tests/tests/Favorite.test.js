@@ -2,6 +2,7 @@ require("chromedriver");
 const { expect } = require("chai");
 const { Builder } = require("selenium-webdriver");
 const { getElementsText, clickElement } = require('./elementHelpers');
+const { delay } = require('./testHelpers')
 
 /**
  * Integration tests for selecting stocks as favorites
@@ -14,6 +15,7 @@ const blackStarCharacter = "\u2605";
 describe("Favorites", function () {
   this.beforeAll(async function () {
     driver = await new Builder().forBrowser("chrome").build();
+    await delay(60000);
   });
 
   this.afterAll(async function () {
