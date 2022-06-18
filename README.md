@@ -87,13 +87,12 @@ stock_data_weekly = https://www.alphavantage.co/query?function=TIME_SERIES_WEEKL
 stock_data_monthly = https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&apikey=Q5SUUT82ASKLSWB1
 ```
 
-- Once you finished setting up the configuration file, you can run:
+- Once you finished setting up the configuration file, you can run our test file in your terminal window to check if your configuration file format is correct.
+If the return result is "OK", then your configuration file is correctly set up and you're good to go.
 ```
 python test_config.py
 ```
 
-- in your terminal window to check if your configuration file format is correct.
-If the return result is "OK", then your configuration file is correctly set up and you're good to go.
 
 
 
