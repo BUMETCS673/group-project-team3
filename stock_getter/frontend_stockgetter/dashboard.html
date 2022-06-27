@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>StockGetter</title>
+
+
+    <!-- Based on this template: -->
+    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbar-fixed/"> -->
+
+    <!-- Bootstrap core CSS -->
+    <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Add in AGrid -->
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+
+    <!-- Add in Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .card {padding:10px}
+
+      .btn-close {
+        margin-bottom: 15px; 
+        float: right;
+      }
+
+
+      .color_tester {
+        color: #f0187d;
+      }
+
+      .card-row {
+        display: none
+      }
+
+      .favorite {
+        font-size: 30px;
+      }
+
+      .favorite:hover {
+        color: #999999;
+      }
+    
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <!-- Navbar -->
+    <link href="./assets/other/navbar-top-fixed.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" >StockGetter</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="./index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./dashboard.html">StockGetter App</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Outer container -->
+    <div class="container">
+
+      <!-- Card with stock symbol data -->
+      <div class="row">
+        <div class="card bg-light p-5 rounded">
+          <div class="card-body">
+              <h3 class="card-title">Available US Stocks:</h3>
+              <p class="card-text">Choose the stock for which you would like 
+                  to fetch data</p>
+
+              <div id="sym_lst_grid"  class="ag-theme-alpine" 
+                style="height: 600px;">
+              </div>
+              
+              <br>
+              <div class="form-group">
+
+                <form>
+                  <label for="data_grain">Select data grain</label>
+                  <select id="data_grain" class="form-control" 
+                    data-role="select-dropdown">
+                    <option value="daily" selected>Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                  <small id="help0" class="form-text text-muted">Select
+                    the grain for stock data. </small>
+                </form>
+
+                <br>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" 
+                  id="forecast_check">
+                  <label class="form-check-label" for="forecast_check">
+                    Generate forecast
+                  </label>
+                  <br>
+                  <small id="help5" class="form-text text-muted">Check to generate
+                    ML forecasts using
+                    <a href="https://facebook.github.io/prophet/">Facebook prophet</a>
+                     algorithm. Forecast 
+                    values include both in-sample 
+                    as well as out-of-sample predictions. </small>
+                </div>
+                
+                <br>
+                <div class="form-outline">
+                  <label class="form-label" for="forecast_horizon">
+                    Forecast horizon</label>
+                  <input type="number" min=1 value=10 id="forecast_horizon" 
+                    class="form-control" disabled>
+                  <small id="help4" class="form-text text-muted">Select
+                    the forecast horizon (the number of out-of-sample
+                    predictions). </small>
+                </div>
+              </div>
+
+              <br>
+                <button id="get_data" class="btn btn-primary">
+                    Get Selected Stock Data</button>
+
+                <button id="clear_cards" class="btn btn-primary"
+                  disabled>
+                  Clear All Stock Cards</button>
+                  
+                <button id="get_zip" class="btn btn-primary"
+                  disabled>
+                  Download Data for All Stock Cards</button>
+
+                <br>
+                <small id="help1" class="form-text text-muted">Select 
+                      up to 5 stocks, one at a time. </small>
+                <br>
+                <small id="help2" class="form-text text-muted">
+                To reset selections (and re-enable the Get
+                 Selected Stock Data button),
+                use Clear All Stock Data button.</small>
+                <br>
+                <small id="help3" class="form-text text-muted">
+                The Download Data for All Stock Cards button
+                 downloads stock data for all cards in on zip file.
+                </small>
+
+                <br>
+                <br>
+                <br>
+
+                <!-- Loading data forecast spinner div here -->
+                <div class="row d-flex justify-content-center">
+                  <div id="get_data_spinner"
+                    class="spinner-border" role="status" style="display: none;">
+                    <span class="sr-only"></span>
+                  </div>
+                  <br>
+                  <br>
+                  <div id="spinner_text_container" style="display: none;">
+                    <h5 id = "spinner_text" 
+                    class="d-flex justify-content-center"></h5>
+                  </div>
+                </div>
+            
+              </div>
+        </div>
+      </div>
+
+      <div class="mt-3"> </div>
+
+      <!-- Cards --------------------------------------------------------- -->
+
+      <!-- Add cards with stock plots and prices here -->
+      <!-- Card 1 -->
+      <div id="card_area1" class="row card-row">
+        <div id="tsPlot1" class="card bg-light p-5 rounded">
+          
+          <!-- Card header -->
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs"  role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" role="tab" 
+                  href="#stk_plot_pane1">Plot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" role="tab"
+                  href="#stk_data_pane1">Data</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card body-->
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- tab pane 1 -->
+              <div class="tab-pane active" id="stk_plot_pane1" role="tabpanel">
+                <h4 id="stk_plot_title1" class="card-title">Plot of {Name Here}</h4>
+                  <div id="stk_plot1"  class="ag-theme-alpine"></div>
+                  <!-- style="height: 600px;"></div> -->
+                  <br>
+                  <button id="export_plot1" class="btn btn-primary">Export Plot</button>
+              </div>
+              
+              <!-- tab pane 2 -->
+              <div class="tab-pane" id="stk_data_pane1" role="tabpanel">
+                <h4 id="stk_tbl_title1" class="card-title">Price History for {Name Here}</h4>
+                  <div id="stock_data_grid1"  class="ag-theme-alpine"
+                  style="height: 600px;"></div>
+                <br>
+                <button id="export_data1" class="btn btn-primary">Export Data</button>
+              </div>
+            </div>
+          </div>
+        <!-- end of card -->
+        </div>
+      <!-- end of row -->
+      </div> 
+      <div class="mt-3"> </div>
+
+      <!-- Card 2  -->
+      <div id="card_area2" class="row card-row">
+        <div id="tsPlot2" class="card bg-light p-5 rounded">
+          
+          <!-- Card header -->
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs"  role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" role="tab" 
+                  href="#stk_plot_pane2">Plot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" role="tab"
+                  href="#stk_data_pane2">Data</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card body-->
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- tab pane 1 -->
+              <div class="tab-pane active" id="stk_plot_pane2" role="tabpanel">
+                <h4 id="stk_plot_title2" class="card-title">Plot of {Name Here}</h4>
+                  <div id="stk_plot2"  class="ag-theme-alpine"></div>
+                  <!-- style="height: 600px;"></div> -->
+                  <br>
+                  <button id="export_plot2" class="btn btn-primary">Export Plot</button>
+              </div>
+              
+              <!-- tab pane 2 -->
+              <div class="tab-pane" id="stk_data_pane2" role="tabpanel">
+                <h4 id="stk_tbl_title2" class="card-title">Price History for {Name Here}</h4>
+                  <div id="stock_data_grid2"  class="ag-theme-alpine"
+                  style="height: 600px;"></div>
+                <br>
+                <button id="export_data2" class="btn btn-primary">Export Data</button>
+              </div>
+            </div>
+          </div>
+        <!-- end of card -->
+        </div>
+      <!-- end of row -->
+      </div> 
+      <div class="mt-3"> </div>
+
+      <!-- Card 3 -->
+      <div id="card_area3" class="row card-row">
+        <div id="tsPlot3" class="card bg-light p-5 rounded">
+          
+          <!-- Card header -->
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs"  role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" role="tab" 
+                  href="#stk_plot_pane3">Plot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" role="tab"
+                  href="#stk_data_pane3">Data</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card body-->
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- tab pane 1 -->
+              <div class="tab-pane active" id="stk_plot_pane3" role="tabpanel">
+                <h4 id="stk_plot_title3" class="card-title">Plot of {Name Here}</h4>
+                  <div id="stk_plot3"  class="ag-theme-alpine"></div>
+                  <!-- style="height: 600px;"></div> -->
+                  <br>
+                  <button id="export_plot3" class="btn btn-primary">Export Plot</button>
+              </div>
+              
+              <!-- tab pane 2 -->
+              <div class="tab-pane" id="stk_data_pane3" role="tabpanel">
+                <h4 id="stk_tbl_title3" class="card-title">Price History for {Name Here}</h4>
+                  <div id="stock_data_grid3"  class="ag-theme-alpine"
+                  style="height: 600px;"></div>
+                <br>
+                <button id="export_data3" class="btn btn-primary">Export Data</button>
+              </div>
+            </div>
+          </div>
+        <!-- end of card -->
+        </div>
+      <!-- end of row -->
+      </div> 
+      <div class="mt-3"> </div>
+
+      <!-- Card 4 -->
+      <div id="card_area4" class="row card-row">
+        <div id="tsPlot4" class="card bg-light p-5 rounded">
+          
+          <!-- Card header -->
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs"  role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" role="tab" 
+                  href="#stk_plot_pane4">Plot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" role="tab"
+                  href="#stk_data_pane4">Data</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card body-->
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- tab pane 1 -->
+              <div class="tab-pane active" id="stk_plot_pane4" role="tabpanel">
+                <h4 id="stk_plot_title4" class="card-title">Plot of {Name Here}</h4>
+                  <div id="stk_plot4"  class="ag-theme-alpine"></div>
+                  <!-- style="height: 600px;"></div> -->
+                  <br>
+                  <button id="export_plot4" class="btn btn-primary">Export Plot</button>
+              </div>
+              
+              <!-- tab pane 2 -->
+              <div class="tab-pane" id="stk_data_pane4" role="tabpanel">
+                <h4 id="stk_tbl_title4" class="card-title">Price History for {Name Here}</h4>
+                  <div id="stock_data_grid4"  class="ag-theme-alpine"
+                  style="height: 600px;"></div>
+                <br>
+                <button id="export_data4" class="btn btn-primary">Export Data</button>
+              </div>
+            </div>
+          </div>
+        <!-- end of card -->
+        </div>
+      <!-- end of row -->
+      </div> 
+      <div class="mt-3"> </div>
+      
+      <!-- Card 5 -->
+      <div id="card_area5" class="row card-row">
+        <div id="tsPlot5" class="card bg-light p-5 rounded">
+          
+          <!-- Card header -->
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs"  role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" role="tab" 
+                  href="#stk_plot_pane5">Plot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" role="tab"
+                  href="#stk_data_pane5">Data</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card body-->
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- tab pane 1 -->
+              <div class="tab-pane active" id="stk_plot_pane5" role="tabpanel">
+                <h4 id="stk_plot_title5" class="card-title">Plot of {Name Here}</h4>
+                  <div id="stk_plot5"  class="ag-theme-alpine"></div>
+                  <!-- style="height: 600px;"></div> -->
+                  <br>
+                  <button id="export_plot5" class="btn btn-primary">Export Plot</button>
+              </div>
+              
+              <!-- tab pane 2 -->
+              <div class="tab-pane" id="stk_data_pane5" role="tabpanel">
+                <h4 id="stk_tbl_title5" class="card-title">Price History for {Name Here}</h4>
+                  <div id="stock_data_grid5"  class="ag-theme-alpine"
+                  style="height: 600px;"></div>
+                <br>
+                <button id="export_data5" class="btn btn-primary">Export Data</button>
+              </div>
+            </div>
+          </div>
+        <!-- end of card -->
+        </div>
+      <!-- end of row -->
+      </div> 
+      <div class="mt-3"> </div>
+    
+    </div>
+
+    
+  </body>
+  <!--Add in some assets  -->
+  <!-- Boostrap JS -->
+  <script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AG-grid JS -->
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+
+  <!-- JsZip -->
+  <script type="text/javascript" src="./assets/dist/js/jszip.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.0/jszip.min.js"></script> -->
+
+  <!-- FileSaver -->
+  <script src="./assets/dist/js/FileSaver.js"></script>
+  
+  <!-- The main script loads after DOM has loaded -->
+  <script type="module" src="./scripts/main.js"></script>
+</html>

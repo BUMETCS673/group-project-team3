@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>StockGetter About</title>
+
+
+    <!-- Based on this template: -->
+    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbar-fixed/"> -->
+
+    <!-- Bootstrap core CSS -->
+    <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Add in AGrid -->
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+
+    <!-- Add in Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .card {padding:10px}
+
+      .btn-close {
+        margin-bottom: 15px; 
+        float: right;
+      }
+
+
+      .color_tester {
+        color: #f0187d;
+      }
+
+      .card-row {
+        display: none
+      }
+    
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <!-- Navbar -->
+    <link href="./assets/other/navbar-top-fixed.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" >StockGetter</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="./index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./dashboard.html">StockGetter App</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Outer container -->
+    <div class="container">
+
+      <!-- Card with stock symbol data -->
+      <div class="row">
+        <h3>About StockGetter</h3>
+        <p>This is the POC of the app that allows user to get all stock data 
+          in one place. It uses plain JavaScript, Bootstrap 5, Ag-Grid, Plotly,
+        JSZip, and FileSaver to implement the app. Stock data is from fcsapi.com
+        and www.alphavantage.co. The app utilizes a Card class to represent 
+        the card div object.
+        </p>
+
+        <br>
+        <br>
+        <br>
+      </div> 
+
+      <div class="row"></div>
+        <h3>About Serguei</h3>
+        <div class="col">
+          <img src="./assets/other/IMG_8452.JPG" width="200">
+        </div>
+
+        <div class="col">
+          <p> <b>Serguei Chervachidze</b> has a background in statistics and economics.  
+            He is pursuing MS in computer science at BU, and
+          currently works as a data scientist in the finanical sector in Boston.
+          </p>
+        </div>
+
+        <div class="col">
+          <p> <b>Sylvie Xiang</b> 's professional and academic trainings are focusing in quantitative
+            analysis. She is pursuing her M.S. in Computer Science at Boston University
+            and has her B.S. and M.S. in Econometrics and Mathematics from Johns Hopkins.
+          </p>
+        </div>
+
+        <div class="col">
+          <p> <b>Jing Tian</b> is taking the computer science MS program and this course is his last
+            course before graduation. He finished his undergraduate study with computer science major and economy minor.
+          </p>
+        </div>
+
+        <div class="col">
+          <p> <b>Duy Nguyen</b> is working as a Quality Manager (manufacturing not software) at Carrier. He has a bachelor's
+            in Mechanical Engineering.
+          </p>
+        </div>
+
+       </div> 
+       
+    </body>
+  <!--Add in some assets  -->
+  <!-- Boostrap JS -->
+  <script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>
